@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<data />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addCustomer"
+            android:layout_width="220dp"
+            android:layout_height="80dp"
+            android:text="@string/add_customer"
+            android:layout_marginTop="20dp"
+            style="@style/TextAppearance.MaterialComponents.Button"
+            android:background="@drawable/ic_button_background"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/displayCustomers"
+            android:layout_width="220dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/display_customers"
+            android:background="@drawable/ic_button_background"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addCustomer" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/deleteCustomer"
+            android:layout_width="220dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/delete_customer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/ic_button_background"
+            app:layout_constraintTop_toBottomOf="@+id/displayCustomers"  />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
