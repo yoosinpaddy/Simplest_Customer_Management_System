@@ -1,69 +1,55 @@
 package com.humaid.abdulla;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
 
-import android.annotation.SuppressLint;
-import android.os.AsyncTask;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
-import com.humaid.abdulla.databinding.ActivityAddBinding;
-import com.humaid.abdulla.room.config.DatabaseClient;
-import com.humaid.abdulla.room.tables.CustomerTable;
-
 public class AddActivity extends AppCompatActivity {
-
-    ActivityAddBinding b;
+    Button add;
+    EditText idEd;
+    EditText nameEd;
+    EditText prefEd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        b= DataBindingUtil.setContentView(this,R.layout.activity_add);
+        setContentView(R.layout.activity_add);
+        add=findViewById(R.id.add);
+        idEd=findViewById(R.id.idEd);
+        nameEd=findViewById(R.id.nameEd);
+        prefEd=findViewById(R.id.prefEd);
         //add data when add button is clicked
-        b.add.setOnClickListener(this::addData);
+        add.setOnClickListener(this::addData);
     }
     public void addData(View v){
         //check if field is empty
         if (validate()){
-            String a=b.idEd.getText().toString();
-            String aa=b.nameEd.getText().toString();
-            String aaa=b.prefEd.getText().toString();
-            @SuppressLint("StaticFieldLeak")
-            class Addpeople extends AsyncTask<Void, Void, Void> {
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    DatabaseClient
-                            .getInstance(AddActivity.this)
-                            .getAppDatabase()
-                            .customerDao()
-                            .insert(new CustomerTable(a,aa,aaa));
-                    return null;
-
-                }
-
-                @Override
-                protected void onPostExecute(Void v) {
-                    Toast.makeText(AddActivity.this, "Customer added successfully", Toast.LENGTH_SHORT).show();
-                    b.prefEd.setText("");
-                    b.nameEd.setText("");
-                    b.idEd.setText("");
-                }
-            }
-
-            Addpeople gh = new Addpeople();
-            gh.execute();
+            String a=idEd.getText().toString();
+            String aa=nameEd.getText().toString();
+            String aaa=prefEd.getText().toString();
+            String sql="INSERT INTO people (id,name,preference) VALUES('"+a+"','"+aa+"','"+aaa+"');";
+            SQLiteDatabase db =openOrCreateDatabase("user",MODE_PRIVATE,null);
+            db.execSQL("CREATE TABLE IF NOT EXISTS people ( id  text NOT NULL, name text NOT NULL,  preference text NOT NULL);");
+            db.execSQL(sql);
+            Toast.makeText(AddActivity.this, "Customer added successfully", Toast.LENGTH_SHORT).show();
+            prefEd.setText("");
+            nameEd.setText("");
+            idEd.setText("");
         }
     }
 
     private boolean validate() {
-        if (b.idEd.getText()!=null&&b.idEd.getText().toString().length()<2){
+        if (idEd.getText()!=null&&idEd.getText().toString().length()<2){
             Toast.makeText(this, "Please fill the id correctly", Toast.LENGTH_LONG).show();
             return false;
-        }else if (b.nameEd.getText()!=null&&b.nameEd.getText().toString().length()<2){
+        }else if (nameEd.getText()!=null&&nameEd.getText().toString().length()<2){
             Toast.makeText(this, "Please fill the name correctly", Toast.LENGTH_LONG).show();
             return false;
-        }else if (b.prefEd.getText()!=null&&b.prefEd.getText().toString().length()<2){
+        }else if (prefEd.getText()!=null&&prefEd.getText().toString().length()<2){
             Toast.makeText(this, "Please fill the Preference correctly", Toast.LENGTH_LONG).show();
             return false;
         }else{

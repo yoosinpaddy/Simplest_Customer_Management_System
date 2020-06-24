@@ -1,27 +1,29 @@
 package com.humaid.abdulla;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
-import com.humaid.abdulla.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    ActivityMainBinding b;
+    Button add,del,display;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        b= DataBindingUtil.setContentView(this,R.layout.activity_main);
+        setContentView(R.layout.activity_main);
+        add=findViewById(R.id.addCustomer);
+        del=findViewById(R.id.deleteCustomer);
+        display=findViewById(R.id.displayCustomers);
         //add when button is clicked
-        b.addCustomer.setOnClickListener(this::addCustomer);
+        add.setOnClickListener(this::addCustomer);
         //delete when button is clicked
-        b.deleteCustomer.setOnClickListener(this::delCustomer);
+        del.setOnClickListener(this::delCustomer);
         //display when button is clicked
-        b.displayCustomers.setOnClickListener(this::displayCustomer);
+        display.setOnClickListener(this::displayCustomer);
     }
     public void addCustomer(View v){
         startActivity(new Intent(this, AddActivity.class));

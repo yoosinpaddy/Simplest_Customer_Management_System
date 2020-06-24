@@ -1,4 +1,4 @@
-package com.humaid.abdulla.room.tables;
+package com.humaid.abdulla;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

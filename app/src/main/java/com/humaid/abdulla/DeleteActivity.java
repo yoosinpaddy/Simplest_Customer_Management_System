@@ -1,62 +1,45 @@
 package com.humaid.abdulla;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-
-import android.annotation.SuppressLint;
-import android.os.AsyncTask;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
-import com.humaid.abdulla.databinding.ActivityDeleteBinding;
-import com.humaid.abdulla.databinding.ActivityDisplayBinding;
-import com.humaid.abdulla.room.config.DatabaseClient;
 
 public class DeleteActivity extends AppCompatActivity {
-    ActivityDeleteBinding b;
+    Button deleteCustomer;
+    EditText idEd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        b= DataBindingUtil.setContentView(this,R.layout.activity_delete);
+        setContentView(R.layout.activity_delete);
+        deleteCustomer=findViewById(R.id.deleteCustomer);
+        idEd=findViewById(R.id.idEd);
+        
         //delete when button is clicked
-        b.deleteCustomer.setOnClickListener(this::deleteCustomer);
+        deleteCustomer.setOnClickListener(this::deleteCustomer);
     }
     public void deleteCustomer(View v){
         //check if field is empty
         if (validate()){
-            String idToDelete=b.idEd.getText().toString();
-            @SuppressLint("StaticFieldLeak")
-            class DeleteCustomer extends AsyncTask<Void, Void, Void> {
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    //Query database to delete
-                     DatabaseClient
-                            .getInstance(DeleteActivity.this)
-                            .getAppDatabase()
-                            .customerDao()
-                            .hasDeleted(idToDelete);
-                    return null;
-
-                }
-
-                @Override
-                protected void onPostExecute(Void v) {
-                    //Get Database response
-                        Toast.makeText(DeleteActivity.this, "Customer Deleted successfully", Toast.LENGTH_SHORT).show();
-                        b.idEd.setText("");
-                }
-            }
-
-            DeleteCustomer gh = new DeleteCustomer();
-            gh.execute();
+            String idToDelete=idEd.getText().toString();
+            String sql="DELETE from people where id="+idToDelete+";";
+            SQLiteDatabase db =openOrCreateDatabase("user",MODE_PRIVATE,null);
+            db.execSQL("CREATE TABLE IF NOT EXISTS customers ( id  text NOT NULL, name text NOT NULL,  preference text NOT NULL);");
+            db.execSQL(sql);
+            //Get Database response
+            Toast.makeText(DeleteActivity.this, "Customer Deleted successfully", Toast.LENGTH_SHORT).show();
+            idEd.setText("");
 
         }
     }
 
     private boolean validate() {
-        if (b.idEd.getText()!=null&&b.idEd.getText().toString().length()<2){
+        if (idEd.getText()!=null&&idEd.getText().toString().length()<2){
             Toast.makeText(this, "Please fill the id correctly", Toast.LENGTH_LONG).show();
             return false;
         }else{
